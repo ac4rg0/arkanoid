@@ -7,13 +7,14 @@ var brick_coords = {
 };
 
 function Brick(x, y, color) {
-  this.x = x;
-  this.y = y;
   this.color = color;
-  this.sprite = new Sprite('img/sprites.png', brick_coords[color], [17,10]);
+  Element.apply(this, [x, y, new Sprite('img/sprites.png', brick_coords[color], [17,10])]);
 }
 
-Brick.prototype = {
+Brick.prototype = new Element();
+Brick.prototype.constructor = Brick;
+
+/*Brick.prototype = {
   draw: function(ctx) {
     //ctx.fillStyle = this.color;
     //ctx.strokeStyle = "#000000";
@@ -23,4 +24,4 @@ Brick.prototype = {
     this.sprite.render(ctx);
     ctx.restore();
   }
-};
+};*/

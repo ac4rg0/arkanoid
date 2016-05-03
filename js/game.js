@@ -3,14 +3,16 @@ var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
 var w = canvas.width;
 var h = canvas.height;
-// var x = 130,
-//  y = 135; // posición inicial de Vaus
+
 var delta;
+
 var ANCHURA_LADRILLO = 20, 
     ALTURA_LADRILLO = 10;
 
-// var frames = 30;
-
+/*
+ * Check if the ball intersects with some brick
+ * This function returns associative array [intersected, side_intersected]
+ */
 function intersects(left, up, right, bottom, cx, cy, radius) {
   var closestX = (cx < left ? left : (cx > right ? right : cx));
   var closestY = (cy < up ? up : (cy > bottom ? bottom : cy));
@@ -44,7 +46,9 @@ function intersects(left, up, right, bottom, cx, cy, radius) {
   };
 }
 
-// Collisions between rectangle and circle
+/*
+ * Check if ball colides with Vaus
+ */
 function circRectsOverlap(x0, y0, w0, h0, cx, cy, r) {
   var testX = cx;
   var testY = cy;
@@ -61,6 +65,10 @@ function circRectsOverlap(x0, y0, w0, h0, cx, cy, r) {
   return (((cx - testX) * (cx - testX) + (cy - testY) * (cy - testY)) < r * r);
 }
 
+/*
+ * Check if ball colides with the walls and it changes the angle at which collided wall
+ * Also return true if the ball colides in bottom wall otherwise false
+ */
 function testCollisionWithWalls(ball, w, h) {
   if (ball.x - ball.diameter / 2 <= 0 || ball.x + ball.diameter / 2 >= w) {
     ball.angle = -ball.angle + Math.PI;
@@ -73,77 +81,22 @@ function testCollisionWithWalls(ball, w, h) {
   }
 }
 
-// función auxiliar
+/* Calculate the distance to move according delta */
 var calcDistanceToMove = function(delta, speed) {
   return speed * delta / 1000;
 };
 
-function Ball(x, y, angle, v, diameter, sticky) {
-  this.x = x;
-  this.y = y;
-  this.angle = angle;
-  this.v = v;
-  this.diameter = diameter;
-  this.sticky = sticky;
-  this.draw = function(ctx) {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.diameter / 2, 0, Math.PI * 2, false);
-    ctx.closePath();
-    ctx.fillStyle = 'gray';
-    ctx.fill();
-  };
-
-  this.move = function(x, y) {
-    if (x === undefined || y === undefined) {
-      incX = this.v * Math.cos(this.angle);
-      incX = calcDistanceToMove(delta, incX);
-      incY = this.v * Math.sin(this.angle);
-      incY = calcDistanceToMove(delta, incY);
-      this.x += incX;
-      this.y -= incY;
-    } else {
-      this.x = x;
-      this.y = y;
-      this.angle = angle;
-      this.v = v;
-      this.diameter = diameter;
-      this.sticky = sticky;
-    }
-  };
-}
-
-function Bonus () {
-  // Hard-coded
-  this.type = 'C'; 
-  this.x = 50;
-  this.y = 50;
-  this.width = 16;
-  this.height = 8;
-  this.speed = 80;
-  this.sprite = new Sprite('img/sprites.png', [224,0], [16,8], 0.5, [0,1,2,3]);
-}
-
-Bonus.prototype = {
-  draw: function(ctx) {
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    this.sprite.render(ctx);
-    ctx.restore();
-  },
-  move: function() {
-    this.sprite.update(delta);
-    this.y += calcDistanceToMove(delta, this.speed);
-  }
-};
-
-// Inits
+/* 
+ * On load init the gameframework and start the game 
+ */
 window.onload = function init() {
   var game = new GF();
   game.start();
 };
 
-
-// GAME FRAMEWORK STARTS HERE
+/*****************************************
+*       GAME FRAMEWORK STARTS HERE       *
+*****************************************/
 var GF = function() {
 
   // vars for counting frames/s, used by the measureFPS function
@@ -151,9 +104,6 @@ var GF = function() {
   var lastTime;
   var fpsContainer;
   var fps, oldTime = 0;
-
-  //  var speed = 300; // px/s 
-  //  var vausWidth = 30,   vausHeight = 10;
 
   var balls = [];
   var bricks = [];
@@ -172,7 +122,7 @@ var GF = function() {
 
   var currentGameState = gameStates.gameRunning;
 
-  // VAUS en objeto literal 
+  // init Vaus (I think don't need a class for it)
   var paddle = {
     dead: false,
     x: 10,
@@ -186,7 +136,7 @@ var GF = function() {
   };
 
   var ladrillos = [
-    // grey
+    // row 1
     {
       x: 20,
       y: 20,
@@ -208,7 +158,7 @@ var GF = function() {
       y: 20,
       c: 'green'
     },
-    // red
+    // row 2
     {
       x: 20,
       y: 42,
@@ -234,6 +184,9 @@ var GF = function() {
 
   var bonuses = [];
 
+  /*
+   * Create bricks needed for the first level
+   */
   var createBricks = function() {
     // Crea el array de ladrillos
     for (b in ladrillos) {
@@ -243,12 +196,18 @@ var GF = function() {
     bricksLeft = bricks.length;
   }
 
+  /*
+   * Draw all bricks needed for the first level
+   */
   var drawBricks = function() {
     for (b in bricks) {
       bricks[b].draw(ctx);
     }
   };
 
+  /*
+   * Measures FPS and display it in the fpsContainer
+   */
   var measureFPS = function(newTime) {
     // test for the very first invocation
     if (lastTime === undefined) {
@@ -271,13 +230,18 @@ var GF = function() {
     frameCount++;
   };
 
-  // clears the canvas content
+  /*
+   * Clear the canvas
+   */
   function clearCanvas() {
     ctx.rect(0,0,w,h);
     ctx.fillStyle = terrainPattern;
     ctx.fill();
   }
 
+  /* 
+   * Check if the ball colides with a brick
+   */
   function testBrickCollision(ball) {
     var inter;
     for (var b = bricks.length - 1; b >= 0; b--) {
@@ -298,7 +262,7 @@ var GF = function() {
             break;
         }
         // increse speed
-        ball.v += 1/bricksLeft * ball.v;
+        ball.v += 10;
         // remove brick
         bricks.splice(b, 1);
         bricksLeft--;
@@ -310,25 +274,28 @@ var GF = function() {
     return bricksLeft;
   }
 
-  // Función para pintar la raqueta Vaus
+  /*
+   * Draw the Vaus
+   */
   function drawVaus(x, y) {
-
-    //ctx.fillStyle = "#000000";
-    //ctx.strokeStyle = "#000000";
-    //ctx.rect(x, y, paddle.width, paddle.height);
     ctx.save();
     ctx.translate(x,y);
     paddle.sprite.render(ctx);
     ctx.restore();
   }
 
+  /*
+   * Display remaining lifes
+   */
   function displayLifes() {
     ctx.font = "15px Arial";
-    //ctx.textAlign = "right";
     ctx.fillStyle = '#ff0000';
     ctx.fillText(lifes, w - 12, 15);
   }
 
+  /*
+   * Update the position of the Vaus
+   */
   var updatePaddlePosition = function() {
 
     paddle.sprite.update(delta);
@@ -350,7 +317,12 @@ var GF = function() {
     }
   };
 
-
+  /*
+   * Update the move of the ball
+   * check if the ball loss
+   * apply effect if necessary
+   * and draw the ball
+   */
   function updateBalls() {
     for (var i = balls.length - 1; i >= 0; i--) {
       var ball = balls[i];
@@ -395,7 +367,7 @@ var GF = function() {
   }
 
   /*
-   * move and draw bonus if any
+   * Move and draw bonus if any
    */
   function updateBonus() {
     for (var i = bonuses.length - 1; i >= 0; i--) {
@@ -405,6 +377,9 @@ var GF = function() {
     }
   }
     
+  /*
+   * Calculate the ms between frames
+   */
   function timer(currentTime) {
     var aux = currentTime - oldTime;
     oldTime = currentTime;
@@ -463,6 +438,9 @@ var GF = function() {
     }
   }
 
+  /*
+   * Main loop of the game
+   */
   var mainLoop = function(time) {
     //main function, called each frame 
     measureFPS(time);
@@ -516,12 +494,11 @@ var GF = function() {
    */
   function init() {
     loadAssets(startNewGame);
-    //startNewGame();
     music.play();
   }
 
   /*
-   * Initialize image backgroud game
+   * Initialize image background game
    */
   function initTerrain(){
     terrain = new Sprite('img/sprites.png', [0,80], [24,32]);
@@ -563,6 +540,9 @@ var GF = function() {
     });
   }
 
+  /*
+   * Prepare low layer of the game
+   */
   var start = function() {
     // adds a div for displaying the fps value
     fpsContainer = document.createElement('div');
