@@ -125,8 +125,8 @@ var GF = function() {
   // init Vaus (I think don't need a class for it)
   var paddle = {
     dead: false,
-    x: 10,
-    y: 130,
+    x: 20,
+    y: h - 30,
     width: 32,
     height: 8,
     sprite: new Sprite('img/sprites.png', [224,40], [32,8], 16, [0,1]),
