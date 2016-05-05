@@ -8,7 +8,10 @@ function Ball(x, y, angle, v, diameter, sticky) {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.diameter / 2, 0, Math.PI * 2, false);
     ctx.closePath();
-    ctx.fillStyle = 'gray';
+    ctx.strokeStyle = "white";
+    ctx.stroke();
+    ctx.lineWidth=1;
+    ctx.fillStyle = 'cyan';
     ctx.fill();
   };
 

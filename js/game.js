@@ -6,6 +6,7 @@ var h = canvas.height;
 
 var delta;
 
+var NUM_LIVES = 3;
 /*
  * Check if the ball intersects with some brick
  * This function returns associative array [intersected, side_intersected]
@@ -106,7 +107,9 @@ var GF = function() {
   var bricks = [];
   var bricksLeft;
 
-  var lifes = 3;
+  var lives = [];
+
+  var highScore = 0;
 
   // vars for handling inputs
   var inputStates = {};
@@ -135,27 +138,51 @@ var GF = function() {
 
   var bonuses = [];
 
-  var lvls = [brickslvl2, brickslvl1];
+  var lvls = [
+    {
+      bricks: brickslvl1, 
+      life: new Sprite('img/sprites.png', [152,48], [17,8]),
+      terrain: new Sprite('img/sprites.png', [0,80], [24,32])
+    },
+    {
+      bricks: brickslvl2,
+      life: new Sprite('img/sprites.png', [152,56], [17,8]),
+      terrain: new Sprite('img/sprites.png', [48,80], [32,32])
+    }
+  ];
 
-  var current_lvl = 0;
+  var next_lvl = 0;
 
+  /*
+   * Load the next lvl if any, otherwise change the game state to finish
+   */
   var load_lvl = function() {
-    if (current_lvl < lvls.length)
-      draw_lvl(lvls[current_lvl]);
+    // Reset balls and bonuses
+    balls = [];
+    bonuses = [];
+
+    // Check if the game is finished
+    if (next_lvl < lvls.length)
+      draw_lvl(lvls[next_lvl]);
     else
       currentGameState = gameStates.gameFinish;
   }
 
   /*
-   * Create bricks needed for the level got by parameter and draw background
+   * Create bricks, terrain and life sprite needed for the level got by parameter
+   * and draw background
    */
-  function draw_lvl(brickslvl) {
-    initTerrain();
+  function draw_lvl(next_lvl) {
+    
+    initTerrain(next_lvl['terrain']);
+    initLives(next_lvl['life']);
+    
     // Crea el array de ladrillos
-    for (b in brickslvl) {
-      bricks.push(new Brick(brickslvl[b].x, brickslvl[b].y, brickslvl[b].c));
-    }
-    //bricks.push(new Brick(brickslvl[0].x, brickslvl[0].y, brickslvl[0].c));
+    var manyBricks = next_lvl['bricks'];
+    /*for (b in manyBricks) {
+      bricks.push(new Brick(manyBricks[b].x, manyBricks[b].y, manyBricks[b].c));
+    }*/
+    bricks.push(new Brick(manyBricks[4].x, manyBricks[4].y, manyBricks[4].c));
     // actualiza bricksLeft
     bricksLeft = bricks.length;
   }
@@ -225,11 +252,18 @@ var GF = function() {
             ball.angle = -ball.angle;
             break;
         }
+        
         // increse speed
         ball.v += 0.5; // 120 ladrillos por nivel
+
+        // add score
+        console.log(bricks[b].value);
+        highScore += bricks[b].value;
+        
         // remove brick
         bricks.splice(b, 1);
         bricksLeft--;
+        
         // play sound "touch brick"
         sound.play('brick');
       }
@@ -249,12 +283,26 @@ var GF = function() {
   }
 
   /*
-   * Display remaining lifes
+   * Display remaining lives
    */
-  function displayLifes() {
-    ctx.font = "15px Arial";
+  function displayLives() {
+    /*ctx.font = "15px Arial";
     ctx.fillStyle = '#ff0000';
-    ctx.fillText(lifes, w - 12, 15);
+    ctx.fillText(lifes, w - 12, 15);*/
+    for(var i = 0; i < lives.length; i++){
+      lives[i].draw(ctx);
+    }
+  }
+
+  /*
+   * Display high score
+   */
+  function displayHighscore() {
+    ctx.font = "bold 10pt calibri";
+    ctx.fillStyle = "#ff0000";
+    ctx.fillText("HIGH SCORE", w/3, 10);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(highScore, w - w/3, 10);
   }
 
   /*
@@ -299,7 +347,7 @@ var GF = function() {
         if (die) {
           balls.splice(i, 1);
           if (balls.length == 0) {
-            lifes--;
+            lives.pop();
           }
           paddle.dead = true;
         }
@@ -321,8 +369,13 @@ var GF = function() {
         }
 
         // load new lvl if there are no longer bricks
-        if (bricksLeft === 0)
+        if (bricksLeft === 0) {
+          clearCanvas();
+          next_lvl++;
           load_lvl();
+          paddle.sticky = true;
+          startNewGame(); // Reset balls, bonuses and so
+        }
 
       } else {
         if (!paddle.sticky) {
@@ -359,9 +412,9 @@ var GF = function() {
   /*
    * Manage the loss of a life in the game
    */
-  var manageLifes = function(){
+  var manageLives = function(){
     if (paddle.dead) {
-      if (lifes > 0) {
+      if (lives.length > 0) {
         var b = new Ball(paddle.x + paddle.width/2, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 6, true);
         balls.push(b);
         paddle.dead = false;
@@ -390,7 +443,9 @@ var GF = function() {
       // dibujar ladrillos
       drawBricks();
 
-      displayLifes();
+      displayLives();
+
+      displayHighscore();
 
       // move and draw bonus if any
       updateBonus();
@@ -429,8 +484,8 @@ var GF = function() {
     // Clear the canvas
     clearCanvas();
 
-    // Manage lifes
-    manageLifes();
+    // Manage lives
+    manageLives();
 
     // Manage if the game is over, if not go on
     manageGameCycle();
@@ -478,18 +533,36 @@ var GF = function() {
   /*
    * Initialize image background game
    */
-  function initTerrain(){
-    terrain = new Sprite('img/sprites.png', [0,80], [24,32]);
+  function initTerrain(terrain){
     terrainPattern = ctx.createPattern(terrain.image(), 'repeat');
+  }
+
+  /*
+   * Initialize lives and load their sprite according to the level
+   */
+  function initLives(lifeSprite) {
+    if (lives.length > 0) { // Load sprite lives in the rest of levels
+      for(var i = 0; i < lives.length; i++) {
+        lives[i].sprite = lifeSprite;
+      }
+    } else { // Load sprite lives in the lvl 1
+      for(var i = 0; i < NUM_LIVES; i++) {
+        if (i === 0)
+          lives[i] = new Life(5, h - 10, lifeSprite);
+        else
+          lives[i] = new Life(5 + 17 * i, h - 10, lifeSprite);
+      }
+    }
   }
 
   /*
    * Initialize the game elements (ball, bricks)
    */
   function startNewGame(){
-    balls.push(new Ball(paddle.x + paddle.width/2, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 6, true));
     load_lvl();
+    balls.push(new Ball(paddle.x + paddle.width/2, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 6, true));
     bonuses.push(new Bonus());
+    //highScore = 0;
   }
   
   /*
