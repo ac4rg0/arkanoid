@@ -1,14 +1,17 @@
-// Only green, blue and white by the moment because
-// they are the only with outline in black in the sprite
 var brick_coords = {
-  green:[15,7], 
-  blue:[31,7],
-  white:[47,7]
+  red:    [0,0],
+  yellow: [16,0],
+  cyan:   [32,0],
+  magenta:[48,0],
+  orange: [0,8],
+  green:  [16,8], 
+  blue:   [32,8],
+  white:  [48,8]
 };
 
 function Brick(x, y, color) {
   this.color = color;
-  Element.apply(this, [x, y, new Sprite('img/sprites.png', brick_coords[color], [17,10])]);
+  Element.apply(this, [x, y, new Sprite('img/sprites.png', brick_coords[color], [16,8])]);
 }
 
 Brick.prototype = new Element();

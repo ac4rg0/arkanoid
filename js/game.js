@@ -6,9 +6,6 @@ var h = canvas.height;
 
 var delta;
 
-var ANCHURA_LADRILLO = 20, 
-    ALTURA_LADRILLO = 10;
-
 /*
  * Check if the ball intersects with some brick
  * This function returns associative array [intersected, side_intersected]
@@ -117,7 +114,8 @@ var GF = function() {
   // game states
   var gameStates = {
     gameRunning: 1,
-    gameOver: 2
+    gameOver: 2,
+    gameFinish: 3
   };
 
   var currentGameState = gameStates.gameRunning;
@@ -135,63 +133,29 @@ var GF = function() {
     shoot: false
   };
 
-  var ladrillos = [
-    // row 1
-    {
-      x: 20,
-      y: 20,
-      c: 'green'
-    }, {
-      x: (20 * 2 + ANCHURA_LADRILLO),
-      y: 20,
-      c: 'blue'
-    }, {
-      x: 20 * 3 + ANCHURA_LADRILLO * 2,
-      y: 20,
-      c: 'white'
-    }, {
-      x: 20 * 4 + ANCHURA_LADRILLO * 3,
-      y: 20,
-      c: 'blue'
-    }, {
-      x: 20 * 5 + ANCHURA_LADRILLO * 4,
-      y: 20,
-      c: 'green'
-    },
-    // row 2
-    {
-      x: 20,
-      y: 42,
-      c: 'green'
-    }, {
-      x: 20 * 2 + ANCHURA_LADRILLO,
-      y: 42,
-      c: 'white'
-    }, {
-      x: 20 * 3 + ANCHURA_LADRILLO * 2,
-      y: 42,
-      c: 'blue'
-    }, {
-      x: 20 * 4 + ANCHURA_LADRILLO * 3,
-      y: 42,
-      c: 'white'
-    }, {
-      x: 20 * 5 + ANCHURA_LADRILLO * 4,
-      y: 42,
-      c: 'green'
-    }
-  ];
-
   var bonuses = [];
 
+  var lvls = [brickslvl2, brickslvl1];
+
+  var current_lvl = 0;
+
+  var load_lvl = function() {
+    if (current_lvl < lvls.length)
+      draw_lvl(lvls[current_lvl]);
+    else
+      currentGameState = gameStates.gameFinish;
+  }
+
   /*
-   * Create bricks needed for the first level
+   * Create bricks needed for the level got by parameter and draw background
    */
-  var createBricks = function() {
+  function draw_lvl(brickslvl) {
+    initTerrain();
     // Crea el array de ladrillos
-    for (b in ladrillos) {
-      bricks.push(new Brick(ladrillos[b].x, ladrillos[b].y, ladrillos[b].c));
+    for (b in brickslvl) {
+      bricks.push(new Brick(brickslvl[b].x, brickslvl[b].y, brickslvl[b].c));
     }
+    //bricks.push(new Brick(brickslvl[0].x, brickslvl[0].y, brickslvl[0].c));
     // actualiza bricksLeft
     bricksLeft = bricks.length;
   }
@@ -262,7 +226,7 @@ var GF = function() {
             break;
         }
         // increse speed
-        ball.v += 10;
+        ball.v += 0.5; // 120 ladrillos por nivel
         // remove brick
         bricks.splice(b, 1);
         bricksLeft--;
@@ -355,6 +319,11 @@ var GF = function() {
           else
             ball.angle = -ball.angle;
         }
+
+        // load new lvl if there are no longer bricks
+        if (bricksLeft === 0)
+          load_lvl();
+
       } else {
         if (!paddle.sticky) {
           ball.sticky = false;
@@ -426,6 +395,8 @@ var GF = function() {
       // move and draw bonus if any
       updateBonus();
 
+      
+
       // call the animation loop every 1/60th of second
       requestAnimationFrame(mainLoop);
     } else if (currentGameState === gameStates.gameOver) { // Game over
@@ -435,6 +406,13 @@ var GF = function() {
       ctx.font = "25px Helvetica";
       ctx.fillStyle = '#ffffff';
       ctx.fillText("Game Over", w / 5, h / 2);
+    } else if (currentGameState === gameStates.gameFinish) {
+      clearCanvas();
+      ctx.fillStyle = '#000000'
+      ctx.fillRect(0, 0, w, h);
+      ctx.font = "25px Helvetica";
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText("Congrats!", w / 5, h / 2);
     }
   }
 
@@ -509,9 +487,8 @@ var GF = function() {
    * Initialize the game elements (ball, bricks)
    */
   function startNewGame(){
-    initTerrain();
     balls.push(new Ball(paddle.x + paddle.width/2, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 6, true));
-    createBricks();
+    load_lvl();
     bonuses.push(new Bonus());
   }
   
