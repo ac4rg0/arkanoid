@@ -28,15 +28,3 @@ function Brick(x, y, color) {
 
 Brick.prototype = new Element();
 Brick.prototype.constructor = Brick;
-
-/*Brick.prototype = {
-  draw: function(ctx) {
-    //ctx.fillStyle = this.color;
-    //ctx.strokeStyle = "#000000";
-    //ctx.fillRect(this.x, this.y, ANCHURA_LADRILLO, ALTURA_LADRILLO);
-    ctx.save();
-    ctx.translate(this.x, this.y);
-    this.sprite.render(ctx);
-    ctx.restore();
-  }
-};*/

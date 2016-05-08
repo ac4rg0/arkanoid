@@ -426,11 +426,7 @@ var brickslvl2 = [
     c: 'magenta'
   },
   // Row 6
-  /*{
-    x: 0,
-    y: 20 + ALTURA_LADRILLO * 5,
-    c: 'yellow'
-  },*/ {
+  {
     x: ANCHURA_LADRILLO,
     y: 20 + ALTURA_LADRILLO * 5,
     c: 'magenta'
@@ -476,19 +472,7 @@ var brickslvl2 = [
     c: 'red'
   },
   // Row 7
-  /*{
-    x: 0,
-    y: 20 + ALTURA_LADRILLO * 6,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO,
-    y: 20 + ALTURA_LADRILLO * 6,
-    c: 'magenta'
-  },*/ {
-    x: ANCHURA_LADRILLO * 2,
-    y: 20 + ALTURA_LADRILLO * 6,
-    c: 'blue'
-  }, {
+   {
     x: ANCHURA_LADRILLO * 3,
     y: 20 + ALTURA_LADRILLO * 6,
     c: 'red'
@@ -534,27 +518,7 @@ var brickslvl2 = [
     c: 'cyan'
   }, 
   // Row 8
-  /*{
-    x: 0,
-    y: 20 + ALTURA_LADRILLO * 7,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO,
-    y: 20 + ALTURA_LADRILLO * 7,
-    c: 'magenta'
-  }, {
-    x: ANCHURA_LADRILLO * 2,
-    y: 20 + ALTURA_LADRILLO * 7,
-    c: 'blue'
-  }, {
-    x: ANCHURA_LADRILLO * 3,
-    y: 20 + ALTURA_LADRILLO * 7,
-    c: 'red'
-  },*/ {
-    x: ANCHURA_LADRILLO * 4,
-    y: 20 + ALTURA_LADRILLO * 7,
-    c: 'green'
-  }, {
+  {
     x: ANCHURA_LADRILLO * 5,
     y: 20 + ALTURA_LADRILLO * 7,
     c: 'cyan'
@@ -592,35 +556,7 @@ var brickslvl2 = [
     c: 'cyan'
   },
   // Row 9
-  /*{
-    x: 0,
-    y: 20 + ALTURA_LADRILLO * 8,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO,
-    y: 20 + ALTURA_LADRILLO * 8,
-    c: 'magenta'
-  }, {
-    x: ANCHURA_LADRILLO * 2,
-    y: 20 + ALTURA_LADRILLO * 8,
-    c: 'blue'
-  }, {
-    x: ANCHURA_LADRILLO * 3,
-    y: 20 + ALTURA_LADRILLO * 8,
-    c: 'red'
-  }, {
-    x: ANCHURA_LADRILLO * 4,
-    y: 20 + ALTURA_LADRILLO * 8,
-    c: 'green'
-  }, {
-    x: ANCHURA_LADRILLO * 5,
-    y: 20 + ALTURA_LADRILLO * 8,
-    c: 'cyan'
-  },*/ {
-    x: ANCHURA_LADRILLO * 6,
-    y: 20 + ALTURA_LADRILLO * 8,
-    c: 'orange'
-  }, {
+  {
     x: ANCHURA_LADRILLO * 7,
     y: 20 + ALTURA_LADRILLO * 8,
     c: 'white'
@@ -650,43 +586,7 @@ var brickslvl2 = [
     c: 'cyan'
   },
   // Row 10
-  /*{
-    x: 0,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'magenta'
-  }, {
-    x: ANCHURA_LADRILLO * 2,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'blue'
-  }, {
-    x: ANCHURA_LADRILLO * 3,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'red'
-  }, {
-    x: ANCHURA_LADRILLO * 4,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'green'
-  }, {
-    x: ANCHURA_LADRILLO * 5,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'cyan'
-  }, {
-    x: ANCHURA_LADRILLO * 6,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'orange'
-  }, {
-    x: ANCHURA_LADRILLO * 7,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'white'
-  },*/ {
-    x: ANCHURA_LADRILLO * 8,
-    y: 20 + ALTURA_LADRILLO * 9,
-    c: 'yellow'
-  }, {
+  {
     x: ANCHURA_LADRILLO * 9,
     y: 20 + ALTURA_LADRILLO * 9,
     c: 'magenta'
@@ -708,51 +608,7 @@ var brickslvl2 = [
     c: 'cyan'
   },
   // Row 11
-  /*{
-    x: 0,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'magenta'
-  }, {
-    x: ANCHURA_LADRILLO * 2,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'blue'
-  }, {
-    x: ANCHURA_LADRILLO * 3,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'red'
-  }, {
-    x: ANCHURA_LADRILLO * 4,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'green'
-  }, {
-    x: ANCHURA_LADRILLO * 5,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'cyan'
-  }, {
-    x: ANCHURA_LADRILLO * 6,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'orange'
-  }, {
-    x: ANCHURA_LADRILLO * 7,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'white'
-  }, {
-    x: ANCHURA_LADRILLO * 8,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO * 9,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'magenta'
-  },*/ {
-    x: ANCHURA_LADRILLO * 10,
-    y: 20 + ALTURA_LADRILLO * 10,
-    c: 'blue'
-  }, {
+  {
     x: ANCHURA_LADRILLO * 11,
     y: 20 + ALTURA_LADRILLO * 10,
     c: 'red'
@@ -766,119 +622,9 @@ var brickslvl2 = [
     c: 'cyan'
   },
   // Row 12
-  /*{
-    x: 0,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'magenta'
-  }, {
-    x: ANCHURA_LADRILLO * 2,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'blue'
-  }, {
-    x: ANCHURA_LADRILLO * 3,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'red'
-  }, {
-    x: ANCHURA_LADRILLO * 4,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'green'
-  }, {
-    x: ANCHURA_LADRILLO * 5,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'cyan'
-  }, {
-    x: ANCHURA_LADRILLO * 6,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'orange'
-  }, {
-    x: ANCHURA_LADRILLO * 7,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'white'
-  }, {
-    x: ANCHURA_LADRILLO * 8,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO * 9,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'magenta'
-  }, {
-    x: ANCHURA_LADRILLO * 10,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'blue'
-  }, {
-    x: ANCHURA_LADRILLO * 11,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'red'
-  },*/ {
-    x: ANCHURA_LADRILLO * 12,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'green'
-  }, {
-    x: ANCHURA_LADRILLO * 13,
-    y: 20 + ALTURA_LADRILLO * 11,
-    c: 'cyan'
-  }/*,
-  // Row 13
   {
-    x: 0,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'magenta'
-  }, {
-    x: ANCHURA_LADRILLO * 2,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'blue'
-  }, {
-    x: ANCHURA_LADRILLO * 3,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'red'
-  }, {
-    x: ANCHURA_LADRILLO * 4,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'green'
-  }, {
-    x: ANCHURA_LADRILLO * 5,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'cyan'
-  }, {
-    x: ANCHURA_LADRILLO * 6,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'orange'
-  }, {
-    x: ANCHURA_LADRILLO * 7,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'white'
-  }, {
-    x: ANCHURA_LADRILLO * 8,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'yellow'
-  }, {
-    x: ANCHURA_LADRILLO * 9,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'magenta'
-  }, {
-    x: ANCHURA_LADRILLO * 10,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'blue'
-  }, {
-    x: ANCHURA_LADRILLO * 11,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'red'
-  }, {
-    x: ANCHURA_LADRILLO * 12,
-    y: 20 + ALTURA_LADRILLO * 12,
-    c: 'green'
-  }, {
     x: ANCHURA_LADRILLO * 13,
-    y: 20 + ALTURA_LADRILLO * 12,
+    y: 20 + ALTURA_LADRILLO * 11,
     c: 'cyan'
-  }*/
+  }
 ];
