@@ -7,7 +7,7 @@ var h = canvas.height;
 var delta;
 
 var NUM_LIVES = 3;
-var TIME_CATCH = 60000; //60 sec bonus catch
+var TIME_CATCH = 30000; //30 sec bonus catch
 
 /*
  * Check if the ball intersects with some brick
@@ -50,7 +50,7 @@ function intersects(left, up, right, bottom, cx, cy, radius) {
  * Check if ball colides with Vaus
  */
 function circRectsOverlap(x0, y0, w0, h0, cx, cy, r) {
-  var testX = cx;
+  /*var testX = cx;
   var testY = cy;
 
   if (testX < x0)
@@ -62,7 +62,19 @@ function circRectsOverlap(x0, y0, w0, h0, cx, cy, r) {
   if (testY > (y0 + h0))
     testY = (y0 + h0);
 
-  return (((cx - testX) * (cx - testX) + (cy - testY) * (cy - testY)) < r * r);
+  return (((cx - testX) * (cx - testX) + (cy - testY) * (cy - testY)) < r * r);*/
+  var distX = Math.abs(cx - x0-w0/2);
+  var distY = Math.abs(cy - y0-h0/2);
+
+  if (distX > (w0/2 + r)) { return false; }
+  if (distY > (h0/2 + r)) { return false; }
+
+  if (distX <= (w0/2)) { return true; } 
+  if (distY <= (h0/2)) { return true; }
+
+  var dx=distX-w0/2;
+  var dy=distY-h0/2;
+  return (dx*dx+dy*dy<=(r*r));
 }
 
 /*
@@ -80,17 +92,31 @@ function intersectRectangles(x0, y0, w0, h0, x1, y1, w1, h1){
  * Also return true if the ball colides in bottom wall otherwise false
  */
 function testCollisionWithWalls(ball, w, h) {
-  if (ball.x - ball.diameter / 2 <= 0 || ball.x + ball.diameter / 2 >= w) {
+  var radio = ball.diameter / 2;
+  // Left
+  if (ball.x < radio) {
+    ball.x = radio;
     ball.angle = -ball.angle + Math.PI;
     return false;
-  } else if (ball.y - ball.diameter / 2 <= 0) {
+    
+  // Right
+  }else if(ball.x >  w - radio) {
+    ball.x = w - radio;
+    ball.angle = -ball.angle + Math.PI;
+    return false;
+  
+  // Up
+  } else if (ball.y < radio) {
+    ball.y = radio;
     ball.angle = -ball.angle;
     return false;
+
+  // Bottom
   } else if (ball.y + ball.diameter / 2 >= h) {
     return true;
   }
-}
-
+ }
+ 
 /* Calculate the distance to move according delta */
 var calcDistanceToMove = function(delta, speed) {
   return speed * delta / 1000;
@@ -436,7 +462,7 @@ var GF = function() {
           ball.move();
         } else {
           // Play sound "touch vaus"
-          sound.play('vaus'); 
+          //sound.play('vaus'); 
 
           ball.angle = -ball.angle;
           ball.move(ball.x, ball.y);
@@ -553,7 +579,7 @@ var GF = function() {
     if (paddle.dead) {
       if (lives.length > 0) {
         ballVausXDistance = paddle.width / 2;
-        var b = new Ball(paddle.x + ballVausXDistance, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 6, true);
+        var b = new Ball(paddle.x + ballVausXDistance, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 4, true);
         balls.push(b);
         paddle.dead = false;
         paddle.sticky = true;
@@ -596,7 +622,7 @@ var GF = function() {
         clearCanvas();
         next_lvl++;
         load_lvl();
-        balls.push(new Ball(paddle.x + paddle.width/2, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 6, true));
+        balls.push(new Ball(paddle.x + paddle.width/2, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 4, true));
         paddle.sticky = true;
         //startNewGame(); // Reset balls, bonuses and so
       }
@@ -610,6 +636,7 @@ var GF = function() {
       ctx.font = "25px Helvetica";
       ctx.fillStyle = '#ffffff';
       ctx.fillText("Game Over", w / 5, h / 2);
+      //insertHallofFame("Adrian", highScore);
     } else if (currentGameState === gameStates.gameFinish) {
       clearCanvas();
       ctx.fillStyle = '#000000'
@@ -712,7 +739,7 @@ var GF = function() {
   function startNewGame(){
     ballVausXDistance = paddle.width / 2;
     load_lvl();
-    balls.push(new Ball(paddle.x + paddle.width/2, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 6, true));
+    balls.push(new Ball(paddle.x + paddle.width/2, paddle.y - paddle.height/2 + 1, Math.PI / 3, 100, 4, true));
     music.play();
     //highScore = 0;
   }
